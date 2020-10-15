@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock, Paper, Scissors with UI</title>
+</head>
+<body style="background-color: #BABABA">
+
+	<p id="castigator">Who's gonna win?</p>
+	<button type="button" id="Rock"> Rock </button>
+	<button type="button" id="Paper"> Paper </button>
+	<button type="button" id="Scissors"> Scissors </button>
+	<button type="button" id="Cool" style="margin-left: 50px"> Too cool for this game :) </button>
+	
+
+  <script>	
+  
+	//construire HTML....
+	const Br = document.createElement('br');
+	document.body.appendChild(Br);
+
+	const Br3 = document.createElement('br');
+	document.body.appendChild(Br3);
+
+	const content = document.createElement('div');
+	content.classList.add('scoring');
+	content.textContent = "What's your choice: Paper, Rock or Scissors? First to five wins.";
+	content.style.color = 'blue';
+	document.body.appendChild(content);
+	
+	const playerText = document.createElement('p');
+	var node3 = document.createTextNode('Player score:');
+	playerText.appendChild(node3);
+	playerText.style.color = 'black';
+	content.appendChild(playerText);
+	
+	const player = document.createElement('p');
+	player.id = 'pPlayer';
+	var node = document.createTextNode(0);
+	player.style.color = 'black';
+	player.appendChild(node);	
+	content.appendChild(player);
+	
+	const Br2 = document.createElement('br');
+	content.appendChild(Br2);
+	
+	const ComputerText = document.createElement('p');
+	var node4 = document.createTextNode('Computer score:');
+	ComputerText.style.color = 'black';
+	ComputerText.appendChild(node4);
+	content.appendChild(ComputerText);
+	
+	const computer = document.createElement('p');
+	computer.id = 'pComputer';
+	var node2 = document.createTextNode(0);
+	computer.style.color = 'black';	
+	computer.appendChild(node2);	
+	content.appendChild(computer);
+  
+  
+	//Event listener
+	document.getElementById("Rock").addEventListener("click", function(){
+		game("Rock");
+	});
+	document.getElementById("Paper").addEventListener("click", function(){
+		game("Paper");
+	});
+	document.getElementById("Scissors").addEventListener("click", function(){
+		game("Scissors");
+	});
+	
+	document.getElementById("Cool").addEventListener("click", function(){
+		resetGame();
+		alert("Respect!");
+	});
+	
+	////testare 
+	var x = document.querySelectorAll("button");
+	document.getElementById("castigator").innerHTML = x[0].innerHTML + x[1].innerHTML + x[2].innerHTML;
+	
+	function resetGame(){
+		document.getElementById("pComputer").innerHTML = 0;
+		document.getElementById("pPlayer").innerHTML = 0;
+		document.getElementById("castigator").innerHTML = "Who's gonna win?";
+		document.getElementById("castigator").style.color = 'black';		
+	}
+	
+	
+	function computerPlay(){
+		var alegereComputer = ["Rock", "Paper", "Scissors"];
+		return alegereComputer[Math.floor((Math.random() * 3 ))];
+	}
+
+	
+	function playRound(playerSelection, computerSelection) {
+		let gameOutcome;
+		
+		if ((computerSelection == "Rock" && playerSelection == "Scissors") || 
+			(computerSelection == "Scissors" && playerSelection == "Paper") ||
+			(computerSelection == "Paper" && playerSelection == "Rock")){
+				gameOutcome = ("You Lose! " + computerSelection + " beats " + playerSelection);
+			}
+		else if((playerSelection == "Rock" && computerSelection == "Scissors") || 
+			(playerSelection == "Scissors" && computerSelection == "Paper") ||
+			(playerSelection == "Paper" && computerSelection == "Rock")){
+				gameOutcome = "You Win! " + playerSelection + " beats " + computerSelection ;
+		}else {
+				gameOutcome = "It's a tie!";
+		}
+
+		return gameOutcome;
+	}
+
+	function game(dinButon){
+		let computerWins = 0;
+		
+		computerSelection = computerPlay();
+		playerSelection = dinButon;
+		rezultat = playRound(playerSelection, computerSelection);	
+		
+		if(rezultat.substring(0, 7) == "You Win"){
+			document.getElementById("castigator").innerHTML = "You win this round! " + playerSelection + " beats " + computerSelection + ".";
+			x = Number(document.getElementById("pPlayer").innerHTML);
+			document.getElementById("pPlayer").innerHTML = x + 1;
+			document.getElementById("castigator").style.color = 'green';
+		}else if(rezultat.substring(0, 8) == "You Lose"){
+			document.getElementById("castigator").innerHTML = "You lose this round! " + computerSelection + " beats " + playerSelection + ".";
+			x = Number(document.getElementById("pComputer").innerHTML);
+			document.getElementById("pComputer").innerHTML = x + 1;
+			document.getElementById("castigator").style.color = 'red';
+		}else{
+			document.getElementById("castigator").innerHTML = "It's a tie! " + computerSelection + " vs. " + playerSelection + ".";
+			document.getElementById("castigator").style.color = 'black';
+		}		
+			
+			
+		//verifica daca jocul s-a terminat si afiseaza scorul final	-- alert apare inainte sa se schimbe innerHTML.. nu stiu de ce
+		if ((Number(document.getElementById("pPlayer").innerHTML) > 4) ||
+			(Number(document.getElementById("pComputer").innerHTML) > 4)){
+			if(Number(document.getElementById("pPlayer").innerHTML) > 4){
+				alert("Game over. You won " + Number(document.getElementById("pPlayer").innerHTML) + 
+						" to " + Number(document.getElementById("pComputer").innerHTML) + "!");
+			}
+			else{
+				alert("Game over. You lose " + Number(document.getElementById("pComputer").innerHTML) + 
+						" to " + Number(document.getElementById("pPlayer").innerHTML) + "!");
+			}
+			resetGame();
+		}	
+	}
+
+  </script>
+</body>
+</html>
